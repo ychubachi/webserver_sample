@@ -39,4 +39,4 @@ with st.form(key='profile_form'): #送信されないとリロードされない
         if submit_btn:
             st.text(f'ようこそ！{name}さん！{address}に書籍を送りました') #Web画面に表示
             st.text(f'年齢層：{age_category}')
-            st.text(f'趣味： {", ".join(hobby)}') #区切り
+            st.text(f'趣味： {", ".join(hobby)}') #カンマ区切り
