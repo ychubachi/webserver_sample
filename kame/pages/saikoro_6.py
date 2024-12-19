@@ -5,15 +5,15 @@ st.title("おみくじ")
 
 if st.button("おみくじをひく"):
     result = random.randint(1, 6)
-    if result == 1:
-       st.write(f"あなたの運勢は「大吉」です")
-    elif result == 2:
-       st.write(f"あなたの運勢は「中吉」です")
-    elif result == 3:
-       st.write(f"あなたの運勢は「小吉」です")
-    elif result == 4:
-       st.write(f"あなたの運勢は「末吉」です")
-    elif result == 5:
-       st.write(f"あなたの運勢は「凶」です")
+    if result % 37 == 0:
+       st.write(f"{result}番 大吉です。")
+    elif result % 31== 0:
+       st.write(f"{result}番 中吉です。")
+    elif result % 29 == 0:
+       st.write(f"{result}番 小吉です。")
+    elif result % 23 == 0:
+       st.write(f"{result}番 末吉です。")
+    elif result % 19 ==0:
+       st.write(f"{result}番  凶です。")
     else:
-       st.write(f"あなたの運勢は「大凶」です")
+       st.write(f"{result}番 大凶 です。")
