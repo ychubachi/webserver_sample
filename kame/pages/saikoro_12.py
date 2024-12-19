@@ -2,8 +2,7 @@ import random
 import streamlit as st
 import pandas as pd
 
-
-if "dices" not in st.session_state:  # セッションデータの初期化
+if "dices" not in st.session_state:
     st.session_state.dices = []
 
 st.title("おみくじを引くアプリ")
