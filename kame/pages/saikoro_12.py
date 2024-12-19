@@ -5,9 +5,9 @@ import pandas as pd
 if "dices" not in st.session_state:
     st.session_state.dices = []
 
-st.title("おみくじを引くアプリ")
+st.title("おみくじ")
 
-if st.button("おみくじを振る"):
+if st.button("おみくじを引く"):
     suuji = random.randint(1, 100)
     if suuji % 37 == 0:
         st.write(f"{suuji}番 大凶です。")
