@@ -2,6 +2,37 @@ import streamlit as st
 import sqlite3
 import hashlib
 
+# スタイルを設定
+def set_styles():
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-color: #FFF0F5; /* 全体の背景をピンク */
+        }
+        input, textarea, select {
+            background-color: #FFFFFF !important; /* 入力フィールドとドロップダウンの背景を白 */
+            color: #000000 !important; /* 入力文字を黒 */
+            border: 1px solid #DDDDDD; /* 境界線を薄いグレー */
+            border-radius: 5px;
+            padding: 8px;
+        }
+        input:focus, textarea:focus, select:focus {
+            border: 1px solid #FF69B4; /* フォーカス時の境界線をピンク */
+            outline: none;
+        }
+        select {
+            background-color: #FFFFFF !important; /* 選択後のドロップダウンも白 */
+        }
+        select option {
+            background-color: #FFFFFF !important; /* ドロップダウンリストの背景も白 */
+            color: #000000;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
 # データベースの初期化
 def init_db():
     conn = sqlite3.connect("users.db")
@@ -28,6 +59,22 @@ def init_db():
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
+# ユーザーログイン
+def login_user(username, password):
+    conn = sqlite3.connect("users.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username = ?", (username,))
+    user = c.fetchone()
+    if user:
+        stored_password = user[2]
+        if stored_password == hash_password(password):
+            return True
+        else:
+            return "パスワードが間違っています"
+    else:
+        return "ユーザー名が存在しません"
+    conn.close()
+
 # ユーザー登録
 def register_user(username, email, password, birthdate, gender):
     conn = sqlite3.connect("users.db")
@@ -47,17 +94,15 @@ def register_user(username, email, password, birthdate, gender):
         conn.close()
     return True
 
-# ユーザーログイン
-def login_user(username, password):
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    c.execute(
-        "SELECT * FROM users WHERE username = ? AND password = ?", 
-        (username, hash_password(password))
-    )
-    user = c.fetchone()
-    conn.close()
-    return user
+# 占い結果を生成
+def get_fortune(answers):
+    hobby, season, mood = answers
+    if hobby == "旅行" and season == "春" and mood == "普通":
+        return "春の旅行は新たな発見をもたらします！"
+    elif hobby == "料理" and season == "秋" and mood == "最高":
+        return "秋の料理で心を満たしてください！"
+    else:
+        return "今日は素敵なことが起きる予感！"
 
 # ログアウトボタンの表示
 def logout_button():
@@ -65,48 +110,25 @@ def logout_button():
         if "username" in st.session_state:
             del st.session_state['username']
             st.session_state["menu"] = "ログイン"
-
-# 占いロジック
-def get_fortune(answers):
-    hobby, season, mood = answers
-
-    if hobby == "旅行" and season == "春" and mood == "最高":
-        return "春の旅行は幸運を運びます。計画を立てましょう！"
-    elif hobby == "旅行" and season == "夏" and mood == "良い":
-        return "夏の旅行は新しい出会いを引き寄せます！"
-    elif hobby == "料理" and season == "秋" and mood == "普通":
-        return "秋の味覚を楽しむ料理が運気を上げます。"
-    elif hobby == "料理" and mood == "少し疲れた":
-        return "疲れた日は簡単なレシピで楽しみましょう。"
-    elif hobby == "読書" and season == "冬" and mood == "最悪":
-        return "静かな時間を読書に使うと心が穏やかになります。"
-    elif hobby == "スポーツ" and season == "春" and mood == "最高":
-        return "アウトドアスポーツでエネルギーをチャージ！"
-    elif hobby == "スポーツ" and season == "秋" and mood == "良い":
-        return "新しいスポーツを始めるチャンスです！"
-    elif hobby == "映画鑑賞" and season == "冬" and mood == "普通":
-        return "暖かい部屋で映画を楽しむとリラックスできます。"
-    elif hobby == "映画鑑賞" and mood == "最悪":
-        return "お気に入りの映画があなたを元気づけます！"
-    elif season == "夏" and mood == "最高":
-        return "夏の日差しがあなたの幸運を引き寄せます！"
-    elif season == "秋" and mood == "少し疲れた":
-        return "秋の景色を楽しむと心が癒されます。"
-    elif season == "冬" and mood == "良い":
-        return "冬の星空を眺めてリフレッシュしましょう！"
-    elif mood == "普通":
-        return "普通の日でも、小さな幸せを見つけることが大事です。"
-    elif mood == "最悪":
-        return "今日は深呼吸をして気持ちを切り替えましょう！"
-    else:
-        return "新しい挑戦があなたの運勢を切り開きます！"
+            st.session_state["login_username"] = ""
+            st.session_state["login_password"] = ""
+            st.session_state["logout_message"] = "ログアウトしました。ログインしてください。"
 
 # 初期化
 init_db()
 
+# スタイル設定
+set_styles()
+
 # ページの初期化
 if "menu" not in st.session_state:
     st.session_state["menu"] = "会員登録"
+
+# 初期値の設定（ログイン入力欄を管理）
+if "login_username" not in st.session_state:
+    st.session_state["login_username"] = ""
+if "login_password" not in st.session_state:
+    st.session_state["login_password"] = ""
 
 # サイドバーでページ選択
 menu = st.sidebar.radio("ページを選んでください", ["会員登録", "ログイン", "占い"], index=["会員登録", "ログイン", "占い"].index(st.session_state["menu"]))
@@ -134,15 +156,23 @@ if menu == "会員登録":
 elif menu == "ログイン":
     st.title("ログイン")
     logout_button()
+
+    # ログアウトメッセージの表示
+    if "logout_message" in st.session_state:
+        st.warning(st.session_state["logout_message"])
+        del st.session_state["logout_message"]
+
     with st.form("login_form"):
-        username = st.text_input("ユーザー名")
-        password = st.text_input("パスワード", type="password")
+        username = st.text_input("ユーザー名", value=st.session_state["login_username"], key="username_field")
+        password = st.text_input("パスワード", type="password", value=st.session_state["login_password"], key="password_field")
         submit_button = st.form_submit_button("ログイン")
         if submit_button:
-            user = login_user(username, password)
-            if user:
+            login_result = login_user(username, password)
+            if login_result == True:
                 st.session_state["username"] = username
                 st.success(f"ようこそ、{username}さん！")
+            else:
+                st.error(login_result)
 
 # 占いページ
 elif menu == "占い":
@@ -153,11 +183,11 @@ elif menu == "占い":
         with st.form("fortune_form"):
             q1 = st.radio("趣味は？", ["旅行", "料理", "読書", "スポーツ", "映画鑑賞"], index=0)
             q2 = st.radio("好きな季節は？", ["春", "夏", "秋", "冬", "特になし"], index=0)
-            q3 = st.radio("今日の気分は？", ["最高", "良い", "普通", "少し疲れた", "最悪"], index=0)
+            q3 = st.radio("今日の気分は？", ["最高", "良い", "普通", "少し疲れた", "最悪"], index=2)
             submit_button = st.form_submit_button("占う")
             if submit_button:
                 answers = [q1, q2, q3]
                 result = get_fortune(answers)
                 st.success(f"結果: {result}")
     else:
-        st.error("ログインしてください！")
+        st.error("ログインしてください")
