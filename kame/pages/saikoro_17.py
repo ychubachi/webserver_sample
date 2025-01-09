@@ -7,7 +7,7 @@ if "dices" not in st.session_state:
 
 st.title("おみくじ")
 
-if st.button("おみくじを引く"):
+if st.button("おみくじをひく"):
     suuji = random.randint(1, 100)
     if suuji %  17 == 16:
         st.write(f"{suuji}番 凶後大吉です。")
