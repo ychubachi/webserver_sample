@@ -190,4 +190,4 @@ elif menu == "占い":
                 result = get_fortune(answers)
                 st.success(f"結果: {result}")
     else:
-        st.error("ログインしてください！")
+        st.error("ログインしてください")
