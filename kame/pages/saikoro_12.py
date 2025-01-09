@@ -7,28 +7,28 @@ if "dices" not in st.session_state:
 
 st.title("おみくじ")
 
-if st.button("おみくじを引く"):
+if st.button("おみくじをひく"):
     suuji = random.randint(1, 100)
-    if suuji % 37 == 0:
+    if suuji % 12 == 11:
         st.write(f"{suuji}番 大凶です。")
-    elif suuji % 31 == 0:
+    elif suuji % 12 == 10:
         st.write(f"{suuji}番 末凶です。")
-    elif suuji % 29 == 0:
+    elif suuji % 12 == 9:
         st.write(f"{suuji}番 半凶です。")
-    elif suuji % 23 == 0:
+    elif suuji % 12 == 8:
         st.write(f"{suuji}番 小凶です。")
-    elif suuji % 19 == 0:
+    elif suuji % 12 == 7:
         st.write(f"{suuji}番 凶です。")
-    elif suuji % 17 == 0:
+    elif suuji % 12 == 6:
         st.write(f"{suuji}番 末小吉です。")
-    elif suuji % 13 == 0:
+    elif suuji % 12 == 5:
         st.write(f"{suuji}番 末吉です。")
-    elif suuji % 11 == 0:
+    elif suuji % 12 == 4:
         st.write(f"{suuji}番 半吉です。")
-    elif suuji % 7 == 0:
+    elif suuji % 12 == 3:
         st.write(f"{suuji}番 吉です。")
-    elif suuji % 5 == 0:
+    elif suuji % 12 == 2:
         st.write(f"{suuji}番 小吉です。")
-    elif suuji % 3 == 0:
+    elif suuji % 12 == 1:
         st.write(f"{suuji}番 中吉です。")
     else: st.write(f"{suuji}番 大吉です。")
