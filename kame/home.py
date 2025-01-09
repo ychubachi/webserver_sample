@@ -29,14 +29,14 @@ if choice == "６種類":
 elif choice == "12種類":
     #st.subheader("12種類のサイコロ")
     #st.write("ここでは12種類のサイコロを使います!")
-    f2 = open(path2)
+    f2 = open(path2,encoding="utf-8")
     content2=f2.read()
     exec(content2)
     # ここに12種類のロジックを実装する
 elif choice == "17種類":
     #st.subheader("17種類のサイコロ")
     #st.write("ここでは17種類のサイコロを使います!")
-    f3 = open(path3)
+    f3 = open(path3,encoding="utf-8")
     content3=f3.read()
     exec(content3)
     # ここに17種類のロジックを実装する
