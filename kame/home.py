@@ -13,9 +13,9 @@ with st.sidebar:
     st.write(f"サイコロの種類: **{choice}**")
 
 #ファイルパス
-path1='./pages/saikoro_6.py'
-path2='./pages/saikoro_12.py'
-path3='./pages/saikoro_17.py'
+path1='kame/pages/saikoro_6.py'
+path2='kame/pages/saikoro_12.py'
+path3='kame/pages/saikoro_17.py'
 
 # 各オプションに応じたロジック
 if choice == "６種類":
@@ -54,5 +54,6 @@ elif choice == "17種類":
         st.error(f"{path3} が見つかりません")
     except Exception as e:
         st.error(f"エラーが発生しました: {e}")
+
     # ここに17種類のロジックを実装する
 
