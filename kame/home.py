@@ -22,7 +22,7 @@ if choice == "６種類":
     # ページのロジックを関数化して直接呼び出す
     #st.subheader("６種類のサイコロ")
     #st.write("ここでは６種類のサイコロを使います！")
-    f1 = open(path1)
+    f1 = open(path1, encoding="utf-8")
     content1=f1.read()
     exec(content1)
     # ここに６種類のロジックを実装する
