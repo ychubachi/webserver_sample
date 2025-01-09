@@ -54,5 +54,6 @@ elif choice == "17種類":
         st.error(f"{path3} が見つかりません")
     except Exception as e:
         st.error(f"エラーが発生しました: {e}")
+
     # ここに17種類のロジックを実装する
 
