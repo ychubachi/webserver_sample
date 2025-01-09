@@ -13,9 +13,9 @@ with st.sidebar:
     st.write(f"サイコロの種類: **{choice}**")
 
 #ファイルパス
-path1='kame/pages/saikoro_6.py'
-path2='kame/pages/saikoro_12.py'
-path3='kame/pages/saikoro_17.py'
+path1='./pages/saikoro_6.py'
+path2='./pages/saikoro_12.py'
+path3='./pages/saikoro_17.py'
 
 # 各オプションに応じたロジック
 if choice == "６種類":
