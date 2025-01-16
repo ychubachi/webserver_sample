@@ -120,3 +120,9 @@ if __name__ == "__main__":
                 exec(f.read())
         except FileNotFoundError:
             st.error("home.py が見つかりません")
+# 設定でサイドバー非表示
+st.markdown("""
+    <style>
+        .css-1v3fvcr { display: none; }
+    </style>
+""", unsafe_allow_html=True)
