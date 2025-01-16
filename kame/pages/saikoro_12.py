@@ -33,7 +33,7 @@ if st.button("おみくじをひく"):
         st.write(f"{suuji}番 中吉です。")
     else: st.write(f"{suuji}番 大吉です。")
 
-    from PIL import Image
+from PIL import Image
 
 img = Image.open('12omikuji.png')
 
