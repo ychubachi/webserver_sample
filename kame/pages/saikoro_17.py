@@ -48,4 +48,4 @@ from PIL import Image
 
 img = Image.open('17omikuji.png')
 
-st.image(img, use_column_width=True)
+st.image(img, use_container_width=True)
