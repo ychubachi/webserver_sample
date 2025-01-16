@@ -44,7 +44,7 @@ def switch_page(page):
 
 # タイトルコールページ
 def title_call_page():
-    st.title("ようこそ！")
+    st.title("おみくじアプリ")
     st.write("このアプリへようこそ！以下のボタンでログインまたは会員登録を行ってください。")
     st.button("ログイン", on_click=lambda: switch_page("login"))
     st.button("会員登録", on_click=lambda: switch_page("register"))
