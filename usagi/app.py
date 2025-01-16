@@ -275,7 +275,7 @@ init_db()
 set_styles()
 
 # ページ選択
-menu = st.sidebar.radio("ページを選んでください", ["会員登録", "ログイン", "占い1", "占い2", "占い3"])
+menu = st.sidebar.radio("ページを選んでください", ["会員登録", "ログイン", "うさぎのシンプル占い", "ウサギの友人相性占い", "うさぎさんが占う、ちょーおおざっぱなあなたの今日の運勢"])
 
 # 会員登録
 if menu == "会員登録":
@@ -313,8 +313,8 @@ elif menu == "ログイン":
                 st.error(login_result)
 
 # 占い1: シンプル占い
-elif menu == "占い1":
-    st.title("占い1")
+elif menu == "うさぎのシンプル占い":
+    st.title("うさぎのシンプル占い")
     if "username" in st.session_state:
         st.write(f"こんにちは、{st.session_state['username']}さん！")
         logout_button()
@@ -330,11 +330,18 @@ elif menu == "占い1":
         st.error("ログインしてください！")
 
 # 占い2: 相性占い
-elif menu == "占い2":
-    st.title("占い2")
+elif menu == "ウサギの友人相性占い":
+    st.title("ウサギの友人相性占い")
     if "username" in st.session_state:
         st.write(f"こんにちは、{st.session_state['username']}さん！")
         logout_button()
+        col1, col2 = st.columns(2)
+        with col1:
+            image_1 = Image.open('./data/img_4.png')
+            st.image(image_1, width=100)
+        with col2:
+            image_2 = Image.open('./data/img_5.png')
+            st.image(image_2, width=100)
         with st.form("fortune_form_2"):
             q1 = st.radio("あなたは山と海どちらに行くのが好きですか？", ["山", "海"])
             q2 = st.radio("相手は山と海どちらに行くのが好きですか？", ["山", "海"])
@@ -350,8 +357,8 @@ elif menu == "占い2":
         st.error("ログインしてください！")
 
 # 占い3: 質問ベースの運勢
-elif menu == "占い3":
-    st.title("占い3")
+elif menu == "うさぎさんが占う、ちょーおおざっぱなあなたの今日の運勢":
+    st.title("うさぎさんが占う、ちょーおおざっぱなあなたの今日の運勢")
     if "username" in st.session_state:
         st.write(f"こんにちは、{st.session_state['username']}さん！")
         logout_button()
