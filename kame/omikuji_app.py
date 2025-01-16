@@ -1,5 +1,6 @@
 import random
 import streamlit as st
+import pandas as pd
 
 if "omikuji" not in st.session_state:
    st.session_states.omikuji = []
