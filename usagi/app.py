@@ -98,160 +98,16 @@ def login_user(username, password):
 # 占い1: シンプル占い
 def get_fortune_1(answers):
     hobby, season, mood = answers
-    if hobby == "旅行" and season == "春" and mood == "最高":
-        return "春の旅行は幸運を運びます。計画を立てましょう！"
-    elif hobby == "旅行" and season == "夏" and mood == "良い":
-        return "夏の旅行は新しい出会いを引き寄せます！"
-    elif hobby == "料理" and season == "秋" and mood == "普通":
-        return "秋の味覚を楽しむ料理が運気を上げます。"
-    elif hobby == "料理" and mood == "少し疲れた":
-        return "疲れた日は簡単なレシピで楽しみましょう。"
-    elif hobby == "読書" and season == "冬" and mood == "最悪":
-        return "静かな時間を読書に使うと心が穏やかになります。"
-    elif hobby == "スポーツ" and season == "春" and mood == "最高":
-        return "アウトドアスポーツでエネルギーをチャージ！"
-    elif hobby == "スポーツ" and season == "秋" and mood == "良い":
-        return "新しいスポーツを始めるチャンスです！"
-    elif hobby == "映画鑑賞" and season == "冬" and mood == "普通":
-        return "暖かい部屋で映画を楽しむとリラックスできます。"
-    elif hobby == "映画鑑賞" and mood == "最悪":
-        return "お気に入りの映画があなたを元気づけます！"
-    elif season == "夏" and mood == "最高":
-        return "夏の日差しがあなたの幸運を引き寄せます！"
-    elif season == "秋" and mood == "少し疲れた":
-        return "秋の景色を楽しむと心が癒されます。"
-    elif season == "冬" and mood == "良い":
-        return "冬の星空を眺めてリフレッシュしましょう！"
-    elif mood == "普通":
-        return "普通の日でも、小さな幸せを見つけることが大事です。"
-    elif mood == "最悪":
-        return "今日は深呼吸をして気持ちを切り替えましょう！"
+    if hobby == "旅行" and season == "春" and mood == "普通":
+        return "春の旅行は新たな発見をもたらします！"
     else:
-        return "新しい挑戦があなたの運勢を切り開きます！"
-
+        return "今日は素敵なことが起きる予感！"
 
 # 占い2: 相性占い
 def get_fortune_2(answers):
     m_s_1, m_s_2, animal_1, animal_2, food_1, food_2 = answers
-    #3つ同じ
-    if  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
+    if m_s_1 == "山" and m_s_2 == "山" and animal_1 == "犬" and animal_2 == "犬" and food_1 == "和食" and food_2 == "和食":
         return "相性90%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性90%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性90%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性90%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
-        return "相性90%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性90%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性90%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性90%"
-    #2つ同じ（犬猫以外）
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性85%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
-        return "相性85%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性85%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性85%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性85%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="山" and food_1=="和食" and food_2=='和食':
-        return "相性85%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性85%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性85%"
-    #2つ同じ（山海以外）
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
-        return "相性83%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
-        return "相性83%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性83%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性83%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性83%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性83%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性83%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性83%"
-    #2つ同じ（和洋以外）
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='洋食':
-        return "相性80%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='和食':
-        return "相性80%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='洋食':
-        return "相性80%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='和食':
-        return "相性80%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='洋食':
-        return "相性80%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='和食':
-        return "相性80%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='洋食':
-        return "相性80%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='和食':
-        return "相性80%"
-    #1つ同じ（和洋同じ）
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="犬" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性75%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="猫" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
-        return "相性75%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="犬" and animal_2=="猫" and food_1=="和食" and food_2=='和食':
-        return "相性75%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="猫" and animal_2=="犬" and food_1=="和食" and food_2=='和食':
-        return "相性75%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="犬" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性75%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="猫" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性75%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="犬" and animal_2=="猫" and food_1=="洋食" and food_2=='洋食':
-        return "相性75%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="猫" and animal_2=="犬" and food_1=="洋食" and food_2=='洋食':
-        return "相性75%"
-    #1つ同じ（山海同じ）
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="猫" and food_1=="和食" and food_2=='洋食':
-        return "相性71%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="犬" and animal_2=="猫" and food_1=="洋食" and food_2=='和食':
-        return "相性71%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="犬" and food_1=="和食" and food_2=='洋食':
-        return "相性71%"
-    elif  m_s_1=="山" and m_s_2=="山" and animal_1=="猫" and animal_2=="犬" and food_1=="洋食" and food_2=='和食':
-        return "相性71%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="猫" and food_1=="和食" and food_2=='洋食':
-        return "相性71%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="犬" and animal_2=="猫" and food_1=="洋食" and food_2=='和食':
-        return "相性71%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="犬" and food_1=="和食" and food_2=='洋食':
-        return "相性71%"
-    elif  m_s_1=="海" and m_s_2=="海" and animal_1=="猫" and animal_2=="犬" and food_1=="洋食" and food_2=='和食':
-        return "相性71%"
-    #1つ同じ（犬猫同じ）
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='洋食':
-        return "相性68%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='和食':
-        return "相性68%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="和食" and food_2=='洋食':
-        return "相性68%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="犬" and animal_2=="犬" and food_1=="洋食" and food_2=='和食':
-        return "相性68%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='洋食':
-        return "相性68%"
-    elif  m_s_1=="山" and m_s_2=="海" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='和食':
-        return "相性68%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="和食" and food_2=='洋食':
-        return "相性68%"
-    elif  m_s_1=="海" and m_s_2=="山" and animal_1=="猫" and animal_2=="猫" and food_1=="洋食" and food_2=='和食':
-        return "相性68%"
     else:
         return "相性50%"
 
@@ -301,6 +157,7 @@ if menu == "会員登録":
 # ログイン
 elif menu == "ログイン":
     st.title("ログイン")
+    logout_button()
     with st.form("login_form"):
         username = st.text_input("ユーザー名")
         password = st.text_input("パスワード", type="password")
@@ -318,6 +175,7 @@ elif menu == "占い1":
     st.title("占い1")
     if "username" in st.session_state:
         st.write(f"こんにちは、{st.session_state['username']}さん！")
+        logout_button()
         with st.form("fortune_form_1"):
             q1 = st.radio("趣味は？", ["旅行", "料理", "読書", "スポーツ", "映画鑑賞"])
             q2 = st.radio("好きな季節は？", ["春", "夏", "秋", "冬", "特になし"])
@@ -334,6 +192,7 @@ elif menu == "占い2":
     st.title("占い2")
     if "username" in st.session_state:
         st.write(f"こんにちは、{st.session_state['username']}さん！")
+        logout_button()
         with st.form("fortune_form_2"):
             q1 = st.radio("あなたは山と海どちらに行くのが好きですか？", ["山", "海"])
             q2 = st.radio("相手は山と海どちらに行くのが好きですか？", ["山", "海"])
@@ -353,6 +212,7 @@ elif menu == "占い3":
     st.title("占い3")
     if "username" in st.session_state:
         st.write(f"こんにちは、{st.session_state['username']}さん！")
+        logout_button()
         questions = [
             "7時間以上寝ましたか？",
             "朝すぐにふとんから出られましたか？",
