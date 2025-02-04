@@ -1,5 +1,6 @@
 import sqlite3
 import streamlit as st
+import os
 
 # データベース接続と初期化
 def init_db():
@@ -42,6 +43,45 @@ def authenticate_user(username, password):
 def switch_page(page):
     st.session_state["page"] = page
 
+# サイコロの種類に応じて、動的にページを切り替える部分
+def saikoro_page(choice):
+    # 現在のスクリプトファイルのディレクトリを取得
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # kame/pages/ディレクトリの絶対パスを作成
+    path1 = os.path.join(current_dir, 'kame', 'pages', 'saikoro_6.py')
+    path2 = os.path.join(current_dir, 'kame', 'pages', 'saikoro_12.py')
+    path3 = os.path.join(current_dir, 'kame', 'pages', 'saikoro_17.py')
+
+    # 各オプションに応じたロジック
+    if choice == "６種類":
+        try:
+            with open(path1, encoding="UTF-8") as f1:
+                content1 = f1.read()
+                exec(content1)  # ファイルの内容を実行
+        except FileNotFoundError:
+            st.error(f"{path1} が見つかりません")
+        except Exception as e:
+            st.error(f"エラーが発生しました: {e}")
+    elif choice == "12種類":
+        try:
+            with open(path2, encoding="UTF-8") as f2:
+                content2 = f2.read()
+                exec(content2)  # ファイルの内容を実行
+        except FileNotFoundError:
+            st.error(f"{path2} が見つかりません")
+        except Exception as e:
+            st.error(f"エラーが発生しました: {e}")
+    elif choice == "17種類":
+        try:
+            with open(path3, encoding="UTF-8") as f3:
+                content3 = f3.read()
+                exec(content3)  # ファイルの内容を実行
+        except FileNotFoundError:
+            st.error(f"{path3} が見つかりません")
+        except Exception as e:
+            st.error(f"エラーが発生しました: {e}")
+
 # タイトルコールページ
 def title_call_page():
     st.title("おみくじアプリ")
@@ -63,7 +103,7 @@ def login_page():
         if authenticate_user(username, password):
             st.success(f"ようこそ、{username}さん！")
             st.session_state["username"] = username
-            switch_page("home")  # ログイン成功後にホームページへ移動
+            switch_page("saikoro")  # ログイン成功後にサイコロ選択ページへ移動
         else:
             st.error("ユーザー名またはパスワードが間違っています。")
 
@@ -91,13 +131,33 @@ def register_page():
             success, message = register_user(username, email, password)
             if success:
                 st.success(f"{username}さん、登録が完了しました！")
-                switch_page("home")  # 登録成功後にホームページへ移動
+                switch_page("saikoro")  # 登録成功後にサイコロ選択ページへ移動
             else:
                 st.error(message)
         else:
             st.error("全てのフィールドを正しく入力してください。")
 
     st.button("ログインはこちら", on_click=lambda: switch_page("login"))
+
+# サイコロ選択ページ
+def saikoro_select_page():
+    st.title("サイコロ選択")
+    options = ["６種類", "12種類", "17種類"]
+    choice = st.selectbox("サイコロの種類を選択してください", options)
+
+    # Sidebar に選択肢を表示
+    with st.sidebar:
+        st.header("現在の選択")
+        st.write(f"サイコロの種類: **{choice}**")
+
+    saikoro_page(choice)
+
+# 設定でサイドバー非表示
+st.markdown("""
+    <style>
+        .css-1v3fvcr { display: none; }
+    </style>
+""", unsafe_allow_html=True)
 
 # ページ表示
 if __name__ == "__main__":
@@ -113,17 +173,5 @@ if __name__ == "__main__":
         login_page()
     elif st.session_state["page"] == "register":
         register_page()
-    elif st.session_state["page"] == "home":
-        try:
-            # home.py を動的に読み込む
-            with open("home.py", "r", encoding="utf-8") as f:
-                exec(f.read())
-        except FileNotFoundError:
-            st.error("home.py が見つかりません")
-
-# 設定でサイドバー非表示
-st.markdown("""
-    <style>
-        .css-1v3fvcr { display: none; }
-    </style>
-""", unsafe_allow_html=True)
+    elif st.session_state["page"] == "saikoro":
+        saikoro_select_page()
