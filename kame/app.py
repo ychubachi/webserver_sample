@@ -3,7 +3,7 @@ import streamlit as st
 
 # データベース接続と初期化
 def init_db():
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect("kame_users.db")
     c = conn.cursor()
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
@@ -18,7 +18,7 @@ def init_db():
 
 # ユーザー登録
 def register_user(username, email, password):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect("kame_users.db")
     c = conn.cursor()
     try:
         c.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", (username, email, password))
@@ -31,7 +31,7 @@ def register_user(username, email, password):
 
 # ログイン認証
 def authenticate_user(username, password):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect("kame_users.db")
     c = conn.cursor()
     c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
     user = c.fetchone()
