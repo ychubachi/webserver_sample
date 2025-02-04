@@ -1,6 +1,8 @@
 import random
 import streamlit as st
 import pandas as pd
+import requests
+import io
 
 st.title("おみくじ")
 
@@ -31,7 +33,6 @@ if st.button("おみくじをひく"):
     else: st.write(f"{suuji}番 大吉です。")
 
 from PIL import Image
-
-img = Image.open('12omikuji.png')
-
+url='https://www.omikuji-do.com/wordpress/wp-content/uploads/2021/05/62a17d5dd53e1a946b4ed3038613e256.png'
+img = Image.open(io.BytesIO(requests.get(url).content))
 st.image(img, use_container_width=True)
