@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
 import hashlib
+import datetime
 from PIL import Image
 
 # スタイルを設定
@@ -284,7 +285,11 @@ if menu == "会員登録":
         username = st.text_input("ユーザー名")
         email = st.text_input("メールアドレス")
         password = st.text_input("パスワード", type="password")
-        birthdate = st.date_input("生年月日")
+        birthdate = st.date_input(
+            "生年月日", 
+            min_value=datetime.date(1920, 1, 1),  # 生年月日の最小値を1920年に設定
+            max_value=datetime.date.today()  # 生年月日の最大値を今日の日付に設定
+        )
         gender = st.selectbox("性別", ["男性", "女性", "その他"])
         submit_button = st.form_submit_button("登録")
         if submit_button:
@@ -337,10 +342,10 @@ elif menu == "ウサギの友人相性占い":
         logout_button()
         col1, col2 = st.columns(2)
         with col1:
-            image_1 = Image.open('./data/img_4.png')
+            image_1 = Image.open('./usagi/data/img_4.png')
             st.image(image_1, width=100)
         with col2:
-            image_2 = Image.open('./data/img_5.png')
+            image_2 = Image.open('./usagi/data/img_5.png')
             st.image(image_2, width=100)
         with st.form("fortune_form_2"):
             q1 = st.radio("あなたは山と海どちらに行くのが好きですか？", ["山", "海"])

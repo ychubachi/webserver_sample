@@ -2,9 +2,6 @@ import random
 import streamlit as st
 import pandas as pd
 
-if "dices" not in st.session_state:
-    st.session_state.dices = []
-
 st.title("おみくじ")
 
 if st.button("おみくじをひく"):

@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 tmp/
 usagi/users.db
+kame/users.db
