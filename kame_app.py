@@ -1,6 +1,10 @@
 import sqlite3
 import streamlit as st
+import re
 import os
+from PIL import Image  # 画像を表示するために追加
+import requests
+import io
 
 # データベース接続と初期化
 def init_db():
@@ -17,10 +21,16 @@ def init_db():
     conn.commit()
     conn.close()
 
-# ユーザー登録
+# ユーザー登録時のパスワードをそのまま保存
 def register_user(username, email, password):
     conn = sqlite3.connect("kame_users.db")
     c = conn.cursor()
+
+    # パスワードのバリデーション（条件削除）
+    if not validate_email(email):
+        conn.close()
+        return False, "メールアドレスが無効です。"
+    
     try:
         c.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", (username, email, password))
         conn.commit()
@@ -30,14 +40,22 @@ def register_user(username, email, password):
         conn.close()
         return False, "このユーザー名は既に登録されています。"
 
-# ログイン認証
+# ログイン時のパスワードを直接比較
 def authenticate_user(username, password):
     conn = sqlite3.connect("kame_users.db")
     c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
-    user = c.fetchone()
+    c.execute("SELECT password FROM users WHERE username = ?", (username,))
+    stored_password = c.fetchone()
     conn.close()
-    return user is not None
+
+    if stored_password:
+        return stored_password[0] == password  # パスワードを直接比較
+    return False
+
+# 入力されたメールアドレスの形式をチェック
+def validate_email(email):
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(email_regex, email)
 
 # ページ切り替え関数
 def switch_page(page):
@@ -45,49 +63,77 @@ def switch_page(page):
 
 # サイコロの種類に応じて、動的にページを切り替える部分
 def saikoro_page(choice):
-    # 現在のスクリプトファイルのディレクトリを取得
     current_dir = os.path.dirname(os.path.abspath(__file__))
+    path_map = {
+        "６種類": os.path.join(current_dir, 'kame', 'pages', 'saikoro_6.py'),
+        "12種類": os.path.join(current_dir, 'kame', 'pages', 'saikoro_12.py'),
+        "17種類": os.path.join(current_dir, 'kame', 'pages', 'saikoro_17.py')
+    }
+    
+    # 該当するサイコロページのファイルを読み込む
+    path = path_map.get(choice)
+    if path and os.path.exists(path):
+        with open(path, encoding="UTF-8") as f:
+            content = f.read()
+            exec(content)  # ファイル内容を実行
+    else:
+        st.error(f"サイコロページのファイルが見つかりません: {path}")
 
-    # kame/pages/ディレクトリの絶対パスを作成
-    path1 = os.path.join(current_dir, 'kame', 'pages', 'saikoro_6.py')
-    path2 = os.path.join(current_dir, 'kame', 'pages', 'saikoro_12.py')
-    path3 = os.path.join(current_dir, 'kame', 'pages', 'saikoro_17.py')
 
-    # 各オプションに応じたロジック
-    if choice == "６種類":
-        try:
-            with open(path1, encoding="UTF-8") as f1:
-                content1 = f1.read()
-                exec(content1)  # ファイルの内容を実行
-        except FileNotFoundError:
-            st.error(f"{path1} が見つかりません")
-        except Exception as e:
-            st.error(f"エラーが発生しました: {e}")
-    elif choice == "12種類":
-        try:
-            with open(path2, encoding="UTF-8") as f2:
-                content2 = f2.read()
-                exec(content2)  # ファイルの内容を実行
-        except FileNotFoundError:
-            st.error(f"{path2} が見つかりません")
-        except Exception as e:
-            st.error(f"エラーが発生しました: {e}")
-    elif choice == "17種類":
-        try:
-            with open(path3, encoding="UTF-8") as f3:
-                content3 = f3.read()
-                exec(content3)  # ファイルの内容を実行
-        except FileNotFoundError:
-            st.error(f"{path3} が見つかりません")
-        except Exception as e:
-            st.error(f"エラーが発生しました: {e}")
+# ホームに戻るボタンを表示
+def home_button():
+    if st.button("ホームに戻る"):
+        switch_page("choose")  # トップページに戻る
 
-# タイトルコールページ
-def title_call_page():
-    st.title("おみくじアプリ")
-    st.write("このアプリへようこそ！以下のボタンでログインまたは会員登録を行ってください。")
-    st.button("ログイン", on_click=lambda: switch_page("login"))
-    st.button("会員登録", on_click=lambda: switch_page("register"))
+# ログアウトボタンを表示
+def logout_button():
+    if st.button("ログアウト"):
+        del st.session_state["username"]  # セッションを削除
+        switch_page("choose")  # ログアウト後にトップページに戻る
+
+# ログインまたは会員登録を選択するページ
+def choose_page():
+    #st.title("おみくじアプリ")
+    st.markdown("<h2 style='text-align: center;'>おみくじアプリ</h2>", unsafe_allow_html=True)
+    st.write("以下のボタンでログインまたは会員登録を行ってください。")
+    
+    # 中央寄せにするためのCSS
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("ログイン", use_container_width=True):
+            switch_page("login")
+    
+    with col2:
+        if st.button("会員登録", use_container_width=True):
+            switch_page("register")
+    url='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmg2kn9DyMES8p81iw0-civQjYw0bIDleQAH8gOAp_mv75OnJaeBgcv6vsVIRNnHT-BTuDfmmQ4X8bgRi3U6tQdG-m5C0nYzWahyDp4vyYTPs7BvcsAZVIhzkHt-scsWxKhE3B3JMs_Y8/s400/syougatsu2_omijikuji2.png'
+    img = Image.open(io.BytesIO(requests.get(url).content))
+    # CSSスタイルを設定して画像をページ下部に配置
+    st.markdown("""
+        <style>
+            .bottom-image-container {
+                display: flex;
+                justify-content: center;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                padding: 10px 0; /* 画像周りに余白を追加 */
+            }
+
+            .bottom-image-container img {
+                max-width: 100%;
+                height: auto; /* 縦横比を維持 */
+                max-height: 40vh; /* 必要に応じて変更 */
+            }
+        </style>
+        <div class="bottom-image-container">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmg2kn9DyMES8p81iw0-civQjYw0bIDleQAH8gOAp_mv75OnJaeBgcv6vsVIRNnHT-BTuDfmmQ4X8bgRi3U6tQdG-m5C0nYzWahyDp4vyYTPs7BvcsAZVIhzkHt-scsWxKhE3B3JMs_Y8/s400/syougatsu2_omijikuji2.png">
+        </div>
+    """, unsafe_allow_html=True)
+
 
 # ログインページ
 def login_page():
@@ -107,7 +153,7 @@ def login_page():
         else:
             st.error("ユーザー名またはパスワードが間違っています。")
 
-    st.button("会員登録はこちら", on_click=lambda: switch_page("register"))
+    home_button()  # ホームに戻るボタン
 
 # 会員登録ページ
 def register_page():
@@ -127,30 +173,37 @@ def register_page():
             st.error("利用規約に同意する必要があります。")
         elif password != confirm_password:
             st.error("パスワードが一致しません。")
+        elif not validate_email(email):
+            st.error("メールアドレスが無効です。")
         elif username and email and password:
             success, message = register_user(username, email, password)
             if success:
                 st.success(f"{username}さん、登録が完了しました！")
+                st.session_state["username"] = username  # 登録完了と同時にログイン状態にする
                 switch_page("saikoro")  # 登録成功後にサイコロ選択ページへ移動
             else:
                 st.error(message)
         else:
             st.error("全てのフィールドを正しく入力してください。")
 
-    st.button("ログインはこちら", on_click=lambda: switch_page("login"))
+    home_button()  # ホームに戻るボタン
 
 # サイコロ選択ページ
 def saikoro_select_page():
     st.title("サイコロ選択")
     options = ["６種類", "12種類", "17種類"]
-    choice = st.selectbox("サイコロの種類を選択してください", options)
+    choice = st.selectbox("サイコロの種類を選択してください：", options)
 
     # Sidebar に選択肢を表示
     with st.sidebar:
         st.header("現在の選択")
         st.write(f"サイコロの種類: **{choice}**")
 
-    saikoro_page(choice)
+    # 画像を表示
+    ##display_image(choice)
+
+    saikoro_page(choice)  # サイコロページを表示
+    logout_button()  # ログアウトボタン
 
 # 設定でサイドバー非表示
 st.markdown("""
@@ -163,12 +216,13 @@ st.markdown("""
 if __name__ == "__main__":
     init_db()  # データベース初期化
 
+    # 最初に表示するページをログインまたは会員登録選択ページに変更
     if "page" not in st.session_state:
-        st.session_state["page"] = "title_call"
+        st.session_state["page"] = "choose"  # ログインまたは会員登録を選択するページに設定
 
     # ページの状態に応じて表示
-    if st.session_state["page"] == "title_call":
-        title_call_page()
+    if st.session_state["page"] == "choose":
+        choose_page()
     elif st.session_state["page"] == "login":
         login_page()
     elif st.session_state["page"] == "register":
