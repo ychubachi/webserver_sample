@@ -17,11 +17,11 @@ if st.button("おみくじをひく"):
     elif result == 3:
        st.write(f"{result}番 小吉です。")
     elif result == 4:
-       st.write(f"{result}番 末吉です。")
+       st.write(f"{result}番 吉です。")
     elif result == 5:
-       st.write(f"{result}番  凶です。")
+       st.write(f"{result}番 末吉です。")
     else:
-       st.write(f"{result}番 大凶 です。")
+       st.write(f"{result}番 凶 です。")
 
 df = pd.DataFrame(st.session_state.omikuji, columns=["おみくじ番号"])
 st.dataframe(df)
