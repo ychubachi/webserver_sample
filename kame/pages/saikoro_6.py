@@ -7,9 +7,6 @@ if "omikuji" not in st.session_state:
    st.session_state.omikuji = []
 
 st.title("おみくじ")
-#画像
-image = Image.open('kame/6omikuji.png')
-st.image(image, width=700)
 
 if st.button("おみくじをひく"):
     result = random.randint(1, 6)
@@ -26,6 +23,10 @@ if st.button("おみくじをひく"):
        st.write(f"{result}番 末吉です。")
     else:
        st.write(f"{result}番 凶 です。")
+
+#画像
+image = Image.open('kame/6omikuji.png')
+st.image(image, width=700)
 
 df = pd.DataFrame(st.session_state.omikuji, columns=["おみくじ番号"])
 st.dataframe(df)
