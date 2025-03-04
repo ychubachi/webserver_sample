@@ -1,11 +1,15 @@
 import random
 import streamlit as st
 import pandas as pd
+from PIL import Image
 
 if "omikuji" not in st.session_state:
    st.session_state.omikuji = []
 
 st.title("おみくじ")
+#画像
+image = Image.open('6omikuji.png')
+st.image(image, width=500)
 
 if st.button("おみくじをひく"):
     result = random.randint(1, 6)
